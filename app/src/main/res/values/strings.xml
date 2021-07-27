@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">PoskoLogistikApp</string>
+    <string name="default_notification_channel_id">LogistikApp</string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="jenis_kebutuhan">
+        <item>sandang</item>
+        <item>pangan</item>
+        <item>obat obatan</item>
+        <item>paket kematian</item>
+        <item>logistik lainya</item>
+    </string-array>
+
+    <string-array name="status">
+        <item>Terima</item>
+        <item>Proses</item>
+    </string-array>
+
+    <string-array name="terima">
+        <item>Belum Terpenuhi</item>
+        <item>Terpenuhi</item>
+    </string-array>
+
+    <string-array name="satuan">
+        <item>kg</item>
+        <item>liter</item>
+        <item>dus</item>
+        <item>unit</item>
+        <item>buah</item>
+        <item>ram</item>
+        <item>lembar</item>
+        <item>pasang</item>
+        <item>bungkus</item>
+        <item>karung</item>
+        <item>kodi</item>
+        <item>pak</item>
+    </string-array>
+</resources>

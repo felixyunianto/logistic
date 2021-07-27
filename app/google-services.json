@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "175803159059",
+    "project_id": "logistik-adit",
+    "storage_bucket": "logistik-adit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175803159059:android:02e079bf1928d4e6ff65e6",
+        "android_client_info": {
+          "package_name": "com.adit.poskologistikapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175803159059-op81dhnbcv5e6kc2rssuccc81mpk822s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC15SVp07hEIZlQtcYz6PQdgipAgX67eyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "175803159059-op81dhnbcv5e6kc2rssuccc81mpk822s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
