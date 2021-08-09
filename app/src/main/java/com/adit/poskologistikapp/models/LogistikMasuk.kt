@@ -16,6 +16,7 @@ data class LogistikMasuk(
     @SerializedName("tanggal") val tanggal : String,
     @SerializedName("foto") val foto : String,
     @SerializedName("id_produk") val id_produk : String,
+    @SerializedName("nama_produk") val nama_produk : String,
     @SerializedName("created_at") val created_at : String,
     @SerializedName("updated_at") val updated_at : String,
 ) : Parcelable

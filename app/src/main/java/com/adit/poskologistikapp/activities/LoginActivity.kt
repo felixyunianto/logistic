@@ -11,6 +11,7 @@ import com.adit.poskologistikapp.models.User
 import com.adit.poskologistikapp.presenters.LoginActivityPresenter
 import com.adit.poskologistikapp.utilities.Constants
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 
 class LoginActivity : AppCompatActivity(), LoginActivityContract.LoginActivityView{
 
@@ -35,6 +36,10 @@ class LoginActivity : AppCompatActivity(), LoginActivityContract.LoginActivityVi
         val deviceToken = Constants.getDeviceToken(this)
         presenter?.saveDeviceToken("Bearer "+user.token, deviceToken)
         val intentLogin = Intent(this@LoginActivity, MainActivity::class.java)
+
+        var gson = Gson()
+        var json : String = gson.toJson(user)
+        Constants.setList(this, json)
 
         startActivity(intentLogin).also {
             finish()

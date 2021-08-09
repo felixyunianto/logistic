@@ -20,6 +20,8 @@ class DonaturActivityAdapter(private var donatur : List<Donatur>, private var li
         holder.binding.tvKeterangan.text = donatur[position].keterangan
         holder.binding.tvAlamat.text = donatur[position].alamat
         holder.binding.tvTanggal.text = donatur[position].tanggal
+        holder.binding.tvJumlah.text = donatur[position].jumlah
+        holder.binding.tvSatuan.text = donatur[position].satuan
 
         holder.binding.ubah.setOnClickListener {
             listener.edit(donatur[position])

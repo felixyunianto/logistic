@@ -126,6 +126,41 @@
                 android:textSize="14sp"
                 android:text="10 - 12 - 2021"/>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="JUMLAH : "
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/tvJumlah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:text="10 - 12 - 2021"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SATUAN : "
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/tvSatuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:text="10 - 12 - 2021"/>
+        </LinearLayout>
 
         <GridLayout
             android:layout_width="match_parent"

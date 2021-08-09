@@ -161,8 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="FOTO : "
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/ivFoto"
@@ -173,7 +172,9 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <GridLayout
+                android:rowCount="1"
+                android:columnCount="2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -182,7 +183,9 @@
                     app:cornerRadius="20dp"
                     android:backgroundTint="@color/orange"
                     android:id="@+id/btnEdit"
-                    android:layout_width="80dp"
+                    android:layout_width="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
                     android:layout_height="40dp"
                     android:textSize="12sp"
                     android:text="Ubah"
@@ -192,12 +195,14 @@
                     app:cornerRadius="20dp"
                     android:backgroundTint="@color/orange"
                     android:id="@+id/btnHapus"
-                    android:layout_width="80dp"
+                    android:layout_width="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
                     android:layout_height="40dp"
                     android:textSize="12sp"
                     android:text="Hapus"
                     android:layout_marginRight="5dp"/>
-            </LinearLayout>
+            </GridLayout>
 
         </LinearLayout>
 

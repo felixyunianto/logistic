@@ -8,8 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.adit.poskologistikapp.activities.DetailBencanaActivity
+import com.adit.poskologistikapp.activities.PoskoMasyarakatActivity
 import com.adit.poskologistikapp.activities.PoskoActivity
 import com.adit.poskologistikapp.adapters.BencanaSliderAdapter
+import com.adit.poskologistikapp.adapters.onClickBencanaSliderAdapter
 import com.adit.poskologistikapp.contracts.HomeFragmentContract
 import com.adit.poskologistikapp.databinding.FragmentHomeBinding
 import com.adit.poskologistikapp.models.Bencana
@@ -36,7 +39,16 @@ class HomeFragment : Fragment(), HomeFragmentContract.HomeFragmentView{
     }
 
     override fun attachToSlider(bencana: List<Bencana>) {
-        adapterBencanaSliderAdapter = BencanaSliderAdapter(bencana)
+        adapterBencanaSliderAdapter = BencanaSliderAdapter(bencana, object : onClickBencanaSliderAdapter{
+            override fun detail(bencana: Bencana) {
+                val intent = Intent(activity, DetailBencanaActivity::class.java).apply {
+                    putExtra("BENCANA_DETAIL", bencana)
+                }
+
+                startActivity(intent)
+            }
+
+        })
         binding.imageSlider.apply {
             setSliderAdapter(adapterBencanaSliderAdapter)
             setIndicatorAnimation(IndicatorAnimationType.WORM)
@@ -75,11 +87,7 @@ class HomeFragment : Fragment(), HomeFragmentContract.HomeFragmentView{
         }
 
         binding.donatur.setOnClickListener {
-            Toast.makeText(requireActivity(), "UNDER DEVELOPMENT", Toast.LENGTH_LONG).show()
-        }
-
-        binding.penerimaan.setOnClickListener {
-            Toast.makeText(requireActivity(), "UNDER DEVELOPMENT", Toast.LENGTH_LONG).show()
+            startActivity(Intent(requireActivity(), PoskoMasyarakatActivity::class.java))
         }
     }
 

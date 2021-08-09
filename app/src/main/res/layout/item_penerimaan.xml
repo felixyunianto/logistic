@@ -165,26 +165,26 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--            <LinearLayout-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="FOTO : "
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="FOTO : "-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold" />-->
 
-                <ImageView
-                    android:id="@+id/ivFoto"
-                    android:layout_width="200dp"
-                    android:layout_height="100dp"
-                    android:src="@mipmap/penerimaan"
-                    android:scaleType="fitXY"/>
+<!--                <ImageView-->
+<!--                    android:id="@+id/ivFoto"-->
+<!--                    android:layout_width="200dp"-->
+<!--                    android:layout_height="100dp"-->
+<!--                    android:src="@mipmap/penerimaan"-->
+<!--                    android:scaleType="fitXY"/>-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
 <!--            <LinearLayout-->
 <!--                android:id="@+id/linearButton"-->

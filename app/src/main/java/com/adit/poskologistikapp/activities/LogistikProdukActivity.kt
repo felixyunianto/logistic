@@ -11,8 +11,10 @@ import com.adit.poskologistikapp.adapters.onClickLogistikAdapter
 import com.adit.poskologistikapp.contracts.LogistikProdukActivityContract
 import com.adit.poskologistikapp.databinding.ActivityLogistikProdukBinding
 import com.adit.poskologistikapp.models.Logistik
+import com.adit.poskologistikapp.models.User
 import com.adit.poskologistikapp.presenters.LogistikProdukActivityPresenter
 import com.adit.poskologistikapp.utilities.Constants
+import com.google.gson.Gson
 
 class LogistikProdukActivity : AppCompatActivity(), LogistikProdukActivityContract.LogistikProdukActivityView {
     private lateinit var binding : ActivityLogistikProdukBinding
@@ -24,6 +26,7 @@ class LogistikProdukActivity : AppCompatActivity(), LogistikProdukActivityContra
         binding = ActivityLogistikProdukBinding.inflate(layoutInflater)
         presenter = LogistikProdukActivityPresenter(this)
         setContentView(binding.root)
+        showHideFab()
 
         binding.fab.setOnClickListener {
             val intent = Intent(this@LogistikProdukActivity, KelolaLogistikActivity::class.java).apply {
@@ -37,7 +40,7 @@ class LogistikProdukActivity : AppCompatActivity(), LogistikProdukActivityContra
     }
 
     override fun attachToRecycler(logistik: List<Logistik>) {
-        adapterLogistik = LogistikProdukActivityAdapter(logistik, object: onClickLogistikAdapter{
+        adapterLogistik = LogistikProdukActivityAdapter(logistik, this@LogistikProdukActivity, object: onClickLogistikAdapter{
             override fun edit(logistik: Logistik) {
                 val intent = Intent(this@LogistikProdukActivity, KelolaLogistikActivity::class.java).apply {
                     putExtra("IS_NEW", false)
@@ -81,9 +84,26 @@ class LogistikProdukActivity : AppCompatActivity(), LogistikProdukActivityContra
         binding.tvEmptyData.visibility = View.VISIBLE
     }
 
+    private fun showHideFab(){
+        val list = Constants.getList(this@LogistikProdukActivity)
+        var user = Gson().fromJson(list, User::class.java)
+
+        if(user.id_posko != getIdPosko()){
+            binding.fab.visibility = View.GONE
+        }
+    }
+
+    private fun isFromBeranda() : Boolean = intent.getBooleanExtra("IS_FROM_BERANDA", true)
+
+    private fun getIdPosko() : String? = intent.getStringExtra("ID_POSKO")
+
     private fun getData(){
         val token = Constants.getToken(this@LogistikProdukActivity)
-        presenter?.getLogistikProduk(token)
+        if(isFromBeranda()){
+            presenter?.getLogistikProduk(token)
+        }else{
+            getIdPosko()?.let { presenter?.getLogistikProdukByPosko(it) }
+        }
     }
 
     private fun delete(id : String){

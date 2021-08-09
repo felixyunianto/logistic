@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    android:elevation="3dp"
+    android:layout_marginVertical="5dp">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:padding="5dp"
+        android:layout_height="match_parent">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/tvTanggal"
+                android:layout_weight="1"
+                android:text="Tanggal"/>
+
+            <TextView
+                android:id="@+id/tvNama"
+                android:layout_weight="1"
+                android:text="Nama Barang"/>
+
+            <TextView
+                android:id="@+id/tvJumlah"
+                android:layout_weight="1"
+                android:text="Jumlah"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+</androidx.cardview.widget.CardView>

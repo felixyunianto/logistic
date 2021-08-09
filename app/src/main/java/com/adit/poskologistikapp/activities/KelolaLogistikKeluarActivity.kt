@@ -32,6 +32,7 @@ class KelolaLogistikKeluarActivity : AppCompatActivity(), LogistikKeluarActivity
         fill()
         binding.etTanggal.inputType = InputType.TYPE_NULL
         openDatePicker()
+        supportActionBar?.hide()
     }
 
     private fun isNew() : Boolean = intent.getBooleanExtra("IS_NEW", true)
@@ -100,6 +101,12 @@ class KelolaLogistikKeluarActivity : AppCompatActivity(), LogistikKeluarActivity
                 binding.etTanggal.setText("$year-${month+1}-$dayOfMonth")
             }, year, month, day)
 
+            datePicker.datePicker.maxDate = c.timeInMillis
+
+            c.add(Calendar.MONTH, -6)
+
+            datePicker.datePicker.minDate = c.timeInMillis
+
             datePicker.show()
         }
     }
@@ -163,7 +170,7 @@ class KelolaLogistikKeluarActivity : AppCompatActivity(), LogistikKeluarActivity
             val keterangan = binding.etKeterangan.text.toString()
             val jumlah = binding.etJumlah.text.toString()
             val satuan = binding.spinnerSatuan.selectedItem.toString()
-            val status = binding.spinnerStatus.selectedItem.toString()
+            val status = "Proses"
             val tanggal = binding.etTanggal.text.toString()
 
             val objectProduk = binding.spinnerProduk.selectedItem as Logistik

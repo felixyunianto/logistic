@@ -12,8 +12,8 @@ import retrofit2.Response
 class KebutuhanPresenter(v : KebutuhanActivityContract.KebutuhanLogistikActivityView?) : KebutuhanActivityContract.KebutuhanLogistikPresenter  {
     private var view : KebutuhanActivityContract.KebutuhanLogistikActivityView? = v
     private var apiService = APIClient.APIService()
-    override fun infoKebutuhanLogistik(token: String) {
-        val request = apiService.getKebutuhanByPosko(token)
+    override fun infoKebutuhanLogistik(token: String, id_posko: String) {
+        val request = apiService.getKebutuhanByPosko(token, id_posko)
         view?.showLoading()
         request.enqueue(object : Callback<WrappedListResponse<Kebutuhan>>{
             override fun onResponse(
@@ -56,7 +56,7 @@ class KebutuhanPresenter(v : KebutuhanActivityContract.KebutuhanLogistikActivity
                     val body = response.body()
                     if(body != null){
                         view?.showToast(body.message)
-                        infoKebutuhanLogistik(token)
+                        infoKebutuhanLogistik(token, id)
                     }else{
                         view?.showToast(body?.message!!)
                     }

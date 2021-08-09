@@ -156,6 +156,11 @@ interface APIServices {
         @Field("satuan") satuan : String,
     ) : Call<WrappedResponse<Donatur>>
 
+    @GET("donatur/posko/{id_posko}")
+    fun getDonaturByPosko(
+        @Path("id_posko") id_posko : String,
+    ): Call<WrappedListResponse<Donatur>>
+
     @FormUrlEncoded
     @PUT("donatur/{id}")
     fun editDonatur(
@@ -181,6 +186,11 @@ interface APIServices {
     @GET("logistik-produk")
     fun getLogistikProduk(
         @Header("Authorization") token : String,
+    ) : Call<WrappedListResponse<Logistik>>
+
+    @GET("logistik-produk/posko/{id_posko}")
+    fun getLogistikProdukByPosko(
+        @Path("id_posko") id_posko : String,
     ) : Call<WrappedListResponse<Logistik>>
 
     @FormUrlEncoded
@@ -261,6 +271,11 @@ interface APIServices {
         @Header("Authorization") token :String,
     ) : Call<WrappedListResponse<LogistikKeluar>>
 
+    @GET("logistik-keluar/posko/{id_posko}")
+    fun getLogistikKeluarByPosko(
+        @Path("id_posko") id_posko : String,
+    ) : Call<WrappedListResponse<LogistikKeluar>>
+
     @FormUrlEncoded
     @POST("logistik-keluar")
     fun postLogistikKeluar(
@@ -307,10 +322,20 @@ interface APIServices {
         @Path("id") id : String
     ) : Call<WrappedResponse<String>>
 
+    @GET("penerimaan/posko/{id_posko}")
+    fun getPenerimaanByPosko(
+        @Path("id_posko") id_posko : String
+    ) : Call<WrappedListResponse<Penerimaan>>
+
     //Penyaluran
     @GET("penyaluran")
     fun getPenyaluran(
         @Header("Authorization") token : String,
+    ) : Call<WrappedListResponse<Penyaluran>>
+
+    @GET("penyaluran/posko/{id_posko}")
+    fun getPenyaluranByPosko(
+        @Path("id_posko") id_posko : String
     ) : Call<WrappedListResponse<Penyaluran>>
 
     @FormUrlEncoded
@@ -330,9 +355,10 @@ interface APIServices {
     @GET("kebutuhan-logistik")
     fun getKebutuhan() : Call<WrappedListResponse<Kebutuhan>>
 
-    @GET("kebutuhan-logistik/posko")
+    @GET("kebutuhan-logistik/posko/{id_posko}")
     fun getKebutuhanByPosko(
         @Header("Authorization") token: String?,
+        @Path("id_posko") id_posko : String,
     ) : Call<WrappedListResponse<Kebutuhan>>
 
     @FormUrlEncoded
@@ -365,4 +391,11 @@ interface APIServices {
         @Header("Authorization") token: String?,
         @Path("id") id : String,
     ) : Call<WrappedResponse<Kebutuhan>>
+
+
+    @GET("print-logistik-masuk")
+    fun printLogistikMasuk(
+        @Query("tanggal_awal") tanggal_awal : String,
+        @Query("tanggal_akhir") tanggal_akhir : String
+    )
 }

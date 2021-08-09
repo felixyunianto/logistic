@@ -30,7 +30,7 @@ class APIClient {
 
 class Constants {
     companion object {
-        const val API_ENDPOINT = "http://logistik-brebes-adit.herokuapp.com/api/"
+        const val API_ENDPOINT = "https://logistik-brebes-adit.herokuapp.com/api/"
 
         fun getToken(context: Context): String {
             val pref = context.getSharedPreferences("TOKEN", MODE_PRIVATE)
@@ -44,6 +44,19 @@ class Constants {
                 putString("TOKEN", token)
                 apply()
             }
+        }
+
+        fun setList(context: Context, value : String){
+            val pref = context.getSharedPreferences("USERDATA", Context.MODE_PRIVATE)
+            pref.edit().apply {
+                putString("USERDATA", value)
+                apply()
+            }
+        }
+
+        fun getList(context: Context) : String?{
+            val list = context.getSharedPreferences("USERDATA", Context.MODE_PRIVATE)
+            return list?.getString("USERDATA", null)
         }
 
         fun getLevel(context: Context): String{

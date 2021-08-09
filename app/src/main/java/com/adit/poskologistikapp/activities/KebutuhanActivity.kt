@@ -11,8 +11,11 @@ import com.adit.poskologistikapp.adapters.onClickAdapterKebutuhan
 import com.adit.poskologistikapp.contracts.KebutuhanActivityContract
 import com.adit.poskologistikapp.databinding.ActivityKebutuhanBinding
 import com.adit.poskologistikapp.models.Kebutuhan
+import com.adit.poskologistikapp.models.User
 import com.adit.poskologistikapp.presenters.KebutuhanPresenter
+import com.adit.poskologistikapp.utilities.APIClient
 import com.adit.poskologistikapp.utilities.Constants
+import com.google.gson.Gson
 
 class KebutuhanActivity : AppCompatActivity(), KebutuhanActivityContract.KebutuhanLogistikActivityView {
     private lateinit var binding : ActivityKebutuhanBinding
@@ -29,6 +32,8 @@ class KebutuhanActivity : AppCompatActivity(), KebutuhanActivityContract.Kebutuh
             }
             startActivity(intent)
         }
+
+        showHideFab()
     }
 
     override fun showToast(message: String) {
@@ -37,7 +42,7 @@ class KebutuhanActivity : AppCompatActivity(), KebutuhanActivityContract.Kebutuh
 
     override fun attachKebutuhanLogistikRecycler(kebutuhan_logistik: List<Kebutuhan>) {
         binding.rvLogistikKeluar.apply {
-            adapter = KebutuhanAdapter(kebutuhan_logistik, object : onClickAdapterKebutuhan{
+            adapter = KebutuhanAdapter(kebutuhan_logistik,this@KebutuhanActivity, object : onClickAdapterKebutuhan{
                 override fun edit(kebutuhan: Kebutuhan) {
                     val intent = Intent(this@KebutuhanActivity, KelolaKebutuhanActivity::class.java).apply {
                         putExtra("IS_NEW", false)
@@ -73,9 +78,20 @@ class KebutuhanActivity : AppCompatActivity(), KebutuhanActivityContract.Kebutuh
         binding.tvEmptyData.visibility = View.VISIBLE
     }
 
+    private fun getIdPosko() : String? = intent.getStringExtra("ID_POSKO")
+
+    private fun showHideFab(){
+        val list = Constants.getList(this)
+        val user = Gson().fromJson(list, User::class.java)
+
+        if(user.id_posko != getIdPosko()){
+            binding.fab.visibility = View.GONE
+        }
+    }
+
     private fun getData(){
         val token = Constants.getToken(this@KebutuhanActivity)
-        presenter?.infoKebutuhanLogistik(token)
+        getIdPosko()?.let { presenter?.infoKebutuhanLogistik(token, it) }
     }
 
     override fun onResume() {

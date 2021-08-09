@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".activities.DetailPetugasActivity">
+
+
+    <TextView
+        android:id="@+id/tvTitleDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Detail Petugas"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleDetail">
+
+        <TableRow>
+
+            <TextView
+                android:text="Username"
+                android:textSize="14sp" />
+
+            <TextView
+                android:paddingHorizontal="5dp"
+                android:text=":"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvUsername"
+                android:text="Username"
+                android:textSize="14sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="Level"
+                android:textSize="14sp" />
+
+            <TextView
+                android:paddingHorizontal="5dp"
+                android:text=":"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvLevel"
+                android:text="Petugas"
+                android:textSize="14sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:text="Posko"
+                android:textSize="14sp" />
+
+            <TextView
+                android:paddingHorizontal="5dp"
+                android:text=":"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvPosko"
+                android:text="Username"
+                android:textSize="14sp" />
+        </TableRow>
+
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

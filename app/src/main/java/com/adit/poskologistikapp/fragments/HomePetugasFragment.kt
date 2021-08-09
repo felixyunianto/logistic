@@ -11,6 +11,9 @@ import com.adit.poskologistikapp.R
 import com.adit.poskologistikapp.activities.*
 import com.adit.poskologistikapp.databinding.FragmentHomeAdminBinding
 import com.adit.poskologistikapp.databinding.FragmentHomePetugasBinding
+import com.adit.poskologistikapp.models.User
+import com.adit.poskologistikapp.utilities.Constants
+import com.google.gson.Gson
 
 class HomePetugasFragment : Fragment() {
     private lateinit var _binding : FragmentHomePetugasBinding
@@ -43,11 +46,21 @@ class HomePetugasFragment : Fragment() {
         }
 
         binding.kebutuhan.setOnClickListener {
-            startActivity(Intent(requireActivity(), KebutuhanActivity::class.java))
+            val list = Constants.getList(requireActivity())
+            val user = Gson().fromJson(list, User::class.java)
+
+            startActivity(Intent(requireActivity(), KebutuhanActivity::class.java).apply {
+                putExtra("ID_POSKO", user.id_posko)
+            })
         }
 
         binding.produk.setOnClickListener {
-            startActivity(Intent(requireActivity(), LogistikProdukActivity::class.java))
+            val list = Constants.getList(requireActivity())
+            val user = Gson().fromJson(list, User::class.java)
+            startActivity(Intent(requireActivity(), LogistikProdukActivity::class.java).apply {
+                putExtra("IS_FROM_BERANDA", true)
+                putExtra("ID_POSKO", user.id_posko)
+            })
         }
     }
 }

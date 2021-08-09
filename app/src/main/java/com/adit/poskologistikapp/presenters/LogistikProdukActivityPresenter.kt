@@ -47,6 +47,40 @@ class LogistikProdukActivityPresenter(v : LogistikProdukActivityContract.Logisti
         })
     }
 
+    override fun getLogistikProdukByPosko(id_posko: String) {
+        val request = apiService.getLogistikProdukByPosko(id_posko)
+        view?.showLoading()
+        request.enqueue(object : Callback<WrappedListResponse<Logistik>> {
+            override fun onResponse(
+                call: Call<WrappedListResponse<Logistik>>,
+                response: Response<WrappedListResponse<Logistik>>
+            ) {
+                if(response.isSuccessful){
+                    val body = response.body()
+                    if (body != null){
+                        if(body.data.isNotEmpty()){
+                            view?.attachToRecycler(body.data)
+                        }else{
+                            view?.emptyData()
+                        }
+                    }else{
+                        view?.showToast(body?.message!!)
+                    }
+                }else{
+                    view?.showToast(response.message())
+                }
+                view?.hideLoading()
+            }
+
+            override fun onFailure(call: Call<WrappedListResponse<Logistik>>, t: Throwable) {
+                view?.showToast("Tidak bisa koneksi ke server")
+                view?.hideLoading()
+                println(t.message)
+            }
+
+        })
+    }
+
     override fun deleteLogistik(token: String, id: String) {
         val request = apiService.deleteLogistikProduk(token, id)
         request.enqueue(object : Callback<WrappedResponse<Logistik>>{

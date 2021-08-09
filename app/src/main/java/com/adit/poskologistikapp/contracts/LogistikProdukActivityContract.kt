@@ -13,6 +13,7 @@ interface LogistikProdukActivityContract {
 
     interface LogistikProdukActivityPresenter{
         fun getLogistikProduk(token : String)
+        fun getLogistikProdukByPosko(id_posko : String)
         fun deleteLogistik(token: String, id : String)
         fun destroy()
     }

@@ -54,7 +54,7 @@
                 android:textSize="16sp"
                 android:text=" : "/>
             <TextView
-                android:id="@+id/tvKontakHp"
+                android:id="@+id/tvJumlahPengungsi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -79,7 +79,7 @@
                 android:textSize="16sp"
                 android:text=" : "/>
             <TextView
-                android:id="@+id/tvJumlahPengungsi"
+                android:id="@+id/tvKontakHp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -119,35 +119,15 @@
             android:columnCount="2">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/masuk"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                app:cornerRadius="50dp"
-                android:textSize="12sp"
-                android:layout_marginRight="2dp"
-                android:backgroundTint="@color/orange"
-                android:text="Logistik Masuk"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/keluar"
+                android:id="@+id/kebutuhan"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_marginLeft="2dp"
                 app:cornerRadius="50dp"
                 android:textSize="12sp"
                 android:backgroundTint="@color/orange"
-                android:text="Logistik Keluar"
+                android:text="Kebutuhan"
                 />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/kebutuhan"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:layout_marginRight="2dp"
-                app:cornerRadius="50dp"
-                android:textSize="12sp"
-                android:backgroundTint="@color/orange"
-                android:text="Kebutuhan"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/lokasi"

@@ -26,6 +26,11 @@ class PoskoActivity : AppCompatActivity(), PoskoActivityContract.PoskoActivityVi
         supportActionBar?.hide();
         setContentView(binding.root)
 
+        val token = Constants.getToken(this)
+        if(token == "UNDEFINED"){
+            binding.fab.visibility = View.GONE
+        }
+
         binding.fab.setOnClickListener{
             val intent = Intent(this@PoskoActivity, KelolaPoskoActivity::class.java).apply {
                 putExtra("IS_NEW", true)
@@ -36,7 +41,7 @@ class PoskoActivity : AppCompatActivity(), PoskoActivityContract.PoskoActivityVi
     }
 
     override fun attachToRecycler(posko: List<Posko>) {
-        adapterPosko = PoskoActivityAdapter(posko, object : onClickPoskoAdapter{
+        adapterPosko = PoskoActivityAdapter(posko, this@PoskoActivity, object : onClickPoskoAdapter{
             override fun edit(posko: Posko) {
                 val intent = Intent(this@PoskoActivity, KelolaPoskoActivity::class.java).apply {
                     putExtra("IS_NEW", false)
@@ -49,6 +54,22 @@ class PoskoActivity : AppCompatActivity(), PoskoActivityContract.PoskoActivityVi
             override fun delete(posko: Posko) {
                 val token = Constants.getToken(this@PoskoActivity)
                 presenter?.delete(token, posko.id)
+            }
+
+            override fun detail(posko : Posko){
+                val intent = Intent(this@PoskoActivity, DetailPoskoActivity::class.java).apply {
+                    putExtra("POSKO", posko)
+                }
+
+                startActivity(intent)
+            }
+
+            override fun kebutuhan(posko: Posko) {
+                val intent = Intent(this@PoskoActivity, KebutuhanActivity::class.java).apply{
+                    putExtra("ID_POSKO", posko.id)
+                }
+
+                startActivity(intent)
             }
 
         })

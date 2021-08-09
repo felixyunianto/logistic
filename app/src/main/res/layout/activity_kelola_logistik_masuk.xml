@@ -166,6 +166,23 @@
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <RelativeLayout
+                android:id="@+id/satuan"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/spinner_background">
+
+                <Spinner
+                    android:id="@+id/spinnerSatuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    />
+
+            </RelativeLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inPengirim"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -184,23 +201,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
-                android:id="@+id/satuan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:background="@drawable/spinner_background">
-
-                <Spinner
-                    android:id="@+id/spinnerSatuan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    />
-
-            </RelativeLayout>
-
-            <RelativeLayout
                 android:id="@+id/status"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"

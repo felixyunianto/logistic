@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adit.poskologistikapp.adapters.PetugasActivityAdapter
 import com.adit.poskologistikapp.adapters.onClickPetugasAdapter
@@ -33,13 +34,26 @@ class PetugasActivity : AppCompatActivity(), PetugasActivityContract.PetugasActi
                 finish()
             }
         }
+
+        binding.searchPetugas.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapterPetugas.filter.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapterPetugas.filter.filter(newText)
+                return false
+            }
+
+        })
     }
 
     override fun showToast(message: String) {
         Toast.makeText(this@PetugasActivity, message, Toast.LENGTH_LONG).show()
     }
 
-    override fun attachPetugasRecycler(petugas: List<Petugas>) {
+    override fun attachPetugasRecycler(petugas: ArrayList<Petugas>) {
         adapterPetugas = PetugasActivityAdapter(petugas, object : onClickPetugasAdapter{
             override fun edit(petugas: Petugas) {
                 val intent = Intent(this@PetugasActivity, KelolaPetugasActivity::class.java).apply {
@@ -52,6 +66,14 @@ class PetugasActivity : AppCompatActivity(), PetugasActivityContract.PetugasActi
 
             override fun delete(petugas: Petugas) {
                 delete(petugas.id)
+            }
+
+            override fun detail(petugas: Petugas) {
+                val intent = Intent(this@PetugasActivity, DetailPetugasActivity::class.java).apply {
+                    putExtra("DETAIL_PETUGAS", petugas)
+                }
+
+                startActivity(intent)
             }
 
         })

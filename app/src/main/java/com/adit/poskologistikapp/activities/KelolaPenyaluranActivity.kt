@@ -1,11 +1,13 @@
 package com.adit.poskologistikapp.activities
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.adit.poskologistikapp.R
 import com.adit.poskologistikapp.contracts.PenyaluranContract
 import com.adit.poskologistikapp.databinding.ActivityKelolaPenyaluranBinding
@@ -16,10 +18,14 @@ import com.adit.poskologistikapp.models.Posko
 import com.adit.poskologistikapp.presenters.KelolaPenyaluranPresenter
 import com.adit.poskologistikapp.presenters.PenyaluranPresenter
 import com.adit.poskologistikapp.utilities.Constants
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class KelolaPenyaluranActivity : AppCompatActivity(), PenyaluranContract.CreateOrUpdateView {
     private lateinit var binding : ActivityKelolaPenyaluranBinding
     private var presenter : PenyaluranContract.CreateOrUpdatePresenter? = null
+    @RequiresApi(Build.VERSION_CODES.O)
+    val currentDateTime = LocalDateTime.now()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +35,9 @@ class KelolaPenyaluranActivity : AppCompatActivity(), PenyaluranContract.CreateO
         setupSpinner()
         doSave()
         fill()
+        supportActionBar?.hide()
+
+        binding.etTanggal.setText(currentDateTime.format(DateTimeFormatter.ISO_DATE))
     }
 
     private fun isNew() : Boolean = intent.getBooleanExtra("IS_NEW", true)
@@ -127,14 +136,16 @@ class KelolaPenyaluranActivity : AppCompatActivity(), PenyaluranContract.CreateO
     private fun doSave(){
         binding.btnSubmit.setOnClickListener {
             val token = Constants.getToken(this)
+            val objectProduk = binding.spinnerProduk.selectedItem as Logistik
+
             val jenis_kebutuhan = binding.jenis.selectedItem.toString()
             val keterangan = binding.etKeterangan.text.toString()
             val jumlah = binding.etJumlah.text.toString()
-            val satuan = binding.spinnerSatuan.selectedItem.toString()
-            val status = binding.spinnerStatus.selectedItem.toString()
+            val satuan = objectProduk.satuan
+            val status = "Terima"
             val tanggal = binding.etTanggal.text.toString()
 
-            val objectProduk = binding.spinnerProduk.selectedItem as Logistik
+
             val id_produk = objectProduk.id
 
             val penerima = binding.etTerima.text.toString()

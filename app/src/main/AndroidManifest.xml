@@ -14,7 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PoskoLogistikApp">
-        <activity android:name=".activities.KelolaKebutuhanActivity"></activity>
+        <activity android:name=".activities.DetailPetugasActivity"></activity>
+        <activity android:name=".activities.DetailPoskoActivity" />
+        <activity android:name=".activities.DetailBencanaActivity" />
+        <activity android:name=".activities.PoskoMasyarakatActivity" />
+        <activity android:name=".activities.DonaturByPoskoActivity" />
+        <activity android:name=".activities.KelolaKebutuhanActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

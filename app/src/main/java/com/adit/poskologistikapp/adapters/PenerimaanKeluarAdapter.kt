@@ -22,6 +22,7 @@ class PenerimaanKeluarAdapter(private var keluar : List<LogistikKeluar>, private
         holder.binding.tvKeterangan.text = keluar[position].keterangan
         holder.binding.tvPoskoPenerima.text = keluar[position].penerima
         holder.binding.tvJenisKebutuhan.text = keluar[position].jenis_kebutuhan
+        holder.binding.tvTanggal.text = keluar[position].tanggal
 
         holder.binding.btnKonfirmasi.setOnClickListener {
             listener.konfirmasi(keluar[position])

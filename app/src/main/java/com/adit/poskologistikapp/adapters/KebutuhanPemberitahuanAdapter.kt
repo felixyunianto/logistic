@@ -16,7 +16,7 @@ class KebutuhanPemberitahuanAdapter(private var kebutuhan : List<Kebutuhan>) : R
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.binding.tvJenisKebutuhan.text = kebutuhan[position].jenis_kebutuhan
         holder.binding.tvJumlah.text = kebutuhan[position].jumlah.toString()
-        holder.binding.tvJenisKebutuhan.text = kebutuhan[position].tanggal
+        holder.binding.tvTanggal.text = kebutuhan[position].tanggal
         holder.binding.tvKeterangan.text = kebutuhan[position].keterangan
         holder.binding.tvPosko.text = kebutuhan[position].posko
         holder.binding.tvProduk.text = kebutuhan[position].produk

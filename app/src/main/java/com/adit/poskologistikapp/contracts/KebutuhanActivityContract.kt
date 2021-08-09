@@ -14,7 +14,7 @@ interface KebutuhanActivityContract {
     }
 
     interface KebutuhanLogistikPresenter{
-        fun infoKebutuhanLogistik(token : String)
+        fun infoKebutuhanLogistik(token : String, id_posko: String)
         fun delete(token : String, id: String)
         fun destroy()
     }

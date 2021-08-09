@@ -16,6 +16,7 @@ data class LogistikKeluar(
     @SerializedName("satuan") var satuan : String,
     @SerializedName("tanggal") var tanggal : String,
     @SerializedName("id_produk") var id_produk : String,
+    @SerializedName("nama_produk") val nama_produk : String,
     @SerializedName("penerima_id") var penerima_id : String,
     @SerializedName("penerima") var penerima : String,
 ) : Parcelable

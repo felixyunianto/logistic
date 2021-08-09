@@ -32,4 +32,17 @@ interface DonaturActivityContract {
         fun getPosko()
         fun destroy()
     }
+
+    interface DonaturByPoskoView{
+        fun attachToRecycler(donatur : List<Donatur>)
+        fun showToast(message: String?)
+        fun showLoading()
+        fun hideLoading()
+        fun emptyData()
+    }
+
+    interface DonaturByPoskoPresenter {
+        fun infoDonaturByPosko(id_posko : String)
+        fun destroy()
+    }
 }

@@ -233,10 +233,10 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
             )
 
             val satuan = RequestBody.create(
-                MultipartBody.FORM, binding.spinnerSatuan.selectedItem.toString()
+                MultipartBody.FORM, objectProduk.satuan
             )
             val status = RequestBody.create(
-                MultipartBody.FORM, binding.spinnerStatus.selectedItem.toString()
+                MultipartBody.FORM, "Proses"
             )
             val tanggal = RequestBody.create(
                 MultipartBody.FORM, binding.etTanggal.text.toString()

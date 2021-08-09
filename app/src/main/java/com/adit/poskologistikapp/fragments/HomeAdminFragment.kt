@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.adit.poskologistikapp.activities.*
 import com.adit.poskologistikapp.databinding.FragmentHomeAdminBinding
+import com.adit.poskologistikapp.models.User
+import com.adit.poskologistikapp.utilities.Constants
+import com.google.gson.Gson
 
 class HomeAdminFragment : Fragment() {
     private lateinit var _binding : FragmentHomeAdminBinding
@@ -46,7 +49,12 @@ class HomeAdminFragment : Fragment() {
         }
 
         binding.logistik.setOnClickListener {
-            startActivity(Intent(requireActivity(), LogistikProdukActivity::class.java))
+            val list = Constants.getList(requireActivity())
+            val user = Gson().fromJson(list, User::class.java)
+            startActivity(Intent(requireActivity(), LogistikProdukActivity::class.java).apply {
+                putExtra("IS_FROM_BERANDA", true)
+                putExtra("ID_POSKO", user.id_posko)
+            })
         }
     }
 }
