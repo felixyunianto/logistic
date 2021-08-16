@@ -1,14 +1,17 @@
 package com.adit.poskologistikapp.activities
 
+import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.adit.poskologistikapp.R
 import com.adit.poskologistikapp.databinding.ActivityMainBinding
 import com.adit.poskologistikapp.fragments.*
 import com.adit.poskologistikapp.utilities.Constants
+import com.github.florent37.runtimepermission.kotlin.askPermission
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide();
         setContentView(binding.root)
         moveFragment()
+        askPermission()
     }
 
     private fun getToken() : String = Constants.getToken(this@MainActivity)
@@ -68,5 +72,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun askPermission() {
+        askPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION) {
+        }.onDeclined { e ->
+            if(e.hasDenied()){
+                e.denied.forEach(){
 
+                }
+
+                AlertDialog.Builder(this)
+                    .setMessage("Please Accept Our Permission")
+                    .setPositiveButton("Yes"){_ , _ ->
+                        e.askAgain()
+                    }
+                    .setNegativeButton("NO"){dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
+
+            if(e.hasForeverDenied()){
+                e.foreverDenied.forEach(){}
+                e.goToSettings()
+            }
+        }
+    }
 }

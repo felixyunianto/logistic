@@ -1,6 +1,7 @@
 package com.adit.poskologistikapp.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Transformations.map
 import com.adit.poskologistikapp.R
 import com.adit.poskologistikapp.databinding.ActivityLocationPickerBinding
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -27,6 +29,7 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMa
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var googleMap: GoogleMap
     private lateinit var myLocation : Location
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,36 +41,39 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMa
             googleMap = it
             googleMap?.setOnMapClickListener(this@LocationPickerActivity)
         })
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this@LocationPickerActivity)
+        getLocation()
     }
 
     override fun onMapReady(p0: GoogleMap) {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        googleMap = p0
+        if(ActivityCompat.checkSelfPermission(
+                this@LocationPickerActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this@LocationPickerActivity,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ){
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 666)
-        }else{
-            val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this@LocationPickerActivity)
-            fusedLocationProviderClient.lastLocation.apply {
-                addOnCompleteListener{
-                    if(it.isSuccessful){
-                        it.result?.let{
-                            myLocation = it
-                            googleMap = p0
-                            val point = LatLng(myLocation.latitude, myLocation.longitude)
-                            googleMap.apply {
-                                uiSettings?.isZoomControlsEnabled = true
-                                uiSettings?.isMyLocationButtonEnabled = true
-                                uiSettings?.isTiltGesturesEnabled = true
-                                animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder().target(point).zoom(15f).build()))
-                                isMyLocationEnabled  = true
-                                googleMap?.setOnMapClickListener(this@LocationPickerActivity)
-                            }
-                        }
-                    }
-                }
+            return
+        }
+
+        googleMap!!.isMyLocationEnabled = true
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation(){
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location : Location? ->
+            location?.let{ currentLocation ->
+                val myCurrentLocation = LatLng(currentLocation.latitude, currentLocation.longitude)
+                googleMap.addMarker(MarkerOptions().position(myCurrentLocation).title("Location"))
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myCurrentLocation, 15f));
+
             }
         }
     }
+
 
     override fun onMapClick(p0: LatLng) {
         val marker = MarkerOptions().position(LatLng(p0!!.latitude, p0.longitude))
@@ -82,20 +88,5 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMa
         }
         setResult(Activity.RESULT_OK, returnIntent)
         finish()
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == 666){
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission is granted", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Please enable location permission", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 }

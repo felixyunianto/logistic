@@ -17,15 +17,18 @@ import com.adit.poskologistikapp.models.Posko
 import com.adit.poskologistikapp.presenters.KelolaLogistikKeluarActivityPresenter
 import com.adit.poskologistikapp.presenters.LogistikKeluarActivityPresenter
 import com.adit.poskologistikapp.utilities.Constants
+import id.rizmaulana.sheenvalidator.lib.SheenValidator
 import java.util.*
 
 class KelolaLogistikKeluarActivity : AppCompatActivity(), LogistikKeluarActivityContract.CreateOrUpdateView {
     private lateinit var binding : ActivityKelolaLogistikKeluarBinding
     private var presenter : LogistikKeluarActivityContract.CreateOrUpdatePresenter? = null
+    private lateinit var sheenValidator: SheenValidator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityKelolaLogistikKeluarBinding.inflate(layoutInflater)
         presenter = KelolaLogistikKeluarActivityPresenter(this)
+        sheenValidator = SheenValidator(this)
         setContentView(binding.root)
         setupSpinner()
         doSave()
@@ -164,7 +167,7 @@ class KelolaLogistikKeluarActivity : AppCompatActivity(), LogistikKeluarActivity
     }
 
     private fun doSave(){
-        binding.btnSubmit.setOnClickListener {
+        sheenValidator.setOnValidatorListener {
             val token = Constants.getToken(this)
             val jenis_kebutuhan = binding.jenis.selectedItem.toString()
             val keterangan = binding.etKeterangan.text.toString()
@@ -184,6 +187,14 @@ class KelolaLogistikKeluarActivity : AppCompatActivity(), LogistikKeluarActivity
             }else{
                 presenter?.edit(token, getKeluar()?.id.toString(), jenis_kebutuhan, keterangan, jumlah, status, satuan, tanggal, id_produk, penerima_id)
             }
+        }
+
+        sheenValidator.registerAsRequired(binding.etKeterangan)
+        sheenValidator.registerAsRequired(binding.etJumlah)
+        sheenValidator.registerAsRequired(binding.etTanggal)
+
+        binding.btnSubmit.setOnClickListener {
+            sheenValidator.validate()
         }
     }
 }

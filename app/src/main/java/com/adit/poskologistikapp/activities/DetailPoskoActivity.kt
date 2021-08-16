@@ -47,8 +47,11 @@ class DetailPoskoActivity : AppCompatActivity(), PoskoActivityContract.PoskoMasy
     private fun hideShowButton(){
         var list = Constants.getList(this)
         var user = Gson().fromJson(list, User::class.java)
-        if(getDetailPosko()!!.id == user.id_posko){
-            binding.editPengungsi.visibility = View.VISIBLE
+        val token = Constants.getToken(this)
+        if(token != "UNDEFINED"){
+            if(getDetailPosko()!!.id == user.id_posko){
+                binding.editPengungsi.visibility = View.VISIBLE
+            }
         }
     }
 

@@ -12,17 +12,20 @@ import com.adit.poskologistikapp.presenters.LoginActivityPresenter
 import com.adit.poskologistikapp.utilities.Constants
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import id.rizmaulana.sheenvalidator.lib.SheenValidator
 
 class LoginActivity : AppCompatActivity(), LoginActivityContract.LoginActivityView{
 
     private lateinit var binding : ActivityLoginBinding
     private var presenter : LoginActivityContract.LoginActivityPresenter? = null
+    private lateinit var sheenValidator : SheenValidator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         binding = ActivityLoginBinding.inflate(layoutInflater)
         presenter = LoginActivityPresenter(this)
+        sheenValidator = SheenValidator(this)
         setContentView(binding.root)
         doLogin()
         checkAuthentication()
@@ -62,11 +65,18 @@ class LoginActivity : AppCompatActivity(), LoginActivityContract.LoginActivityVi
     }
 
     private fun doLogin(){
-        binding.btnLogin.setOnClickListener {
+        sheenValidator.setOnValidatorListener {
             val username = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
 
             presenter?.login(username, password, this@LoginActivity)
+        }
+
+        sheenValidator.registerAsRequired(binding.etUsername)
+        sheenValidator.registerAsRequired(binding.etPassword)
+
+        binding.btnLogin.setOnClickListener {
+            sheenValidator.validate()
         }
     }
 

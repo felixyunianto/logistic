@@ -111,6 +111,14 @@ class KelolaKebutuhanActivity : AppCompatActivity(), KebutuhanActivityContract.C
     override fun attachToSpinner(produk: List<Logistik>) {
         val spinnerProdukAdapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, produk)
         binding.spinnerProduk.adapter = spinnerProdukAdapter
+
+        if(!isNew()){
+            for(item in produk.indices){
+                if(produk[item].id == getKebuthan()?.id_produk.toString()){
+                    binding.spinnerProduk.setSelection(item)
+                }
+            }
+        }
     }
 
     private fun getData(){

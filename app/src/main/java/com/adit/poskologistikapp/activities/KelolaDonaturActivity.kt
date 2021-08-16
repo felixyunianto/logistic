@@ -16,17 +16,20 @@ import com.adit.poskologistikapp.models.Posko
 import com.adit.poskologistikapp.presenters.DonaturActivityPresenter
 import com.adit.poskologistikapp.presenters.KelolaDonaturActivityPresenter
 import com.adit.poskologistikapp.utilities.Constants
+import id.rizmaulana.sheenvalidator.lib.SheenValidator
 import java.util.*
 
 class KelolaDonaturActivity : AppCompatActivity(), DonaturActivityContract.CreateOrUpdateView {
     private lateinit var binding : ActivityKelolaDonaturBinding
     private var presenter : DonaturActivityContract.CreateOrUpdateInteraction? = null
+    private lateinit var sheenValidator : SheenValidator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         binding = ActivityKelolaDonaturBinding.inflate(layoutInflater)
         presenter = KelolaDonaturActivityPresenter(this)
+        sheenValidator = SheenValidator(this)
         setupSpinner()
         binding.etTanggal.inputType = InputType.TYPE_NULL
         setContentView(binding.root)
@@ -124,7 +127,7 @@ class KelolaDonaturActivity : AppCompatActivity(), DonaturActivityContract.Creat
     }
 
     private fun doSave(){
-        binding.btnSubmit.setOnClickListener {
+        sheenValidator.setOnValidatorListener {
             showLoading()
             val token = Constants.getToken(this@KelolaDonaturActivity)
             val nama = binding.etNama.text.toString()
@@ -142,7 +145,17 @@ class KelolaDonaturActivity : AppCompatActivity(), DonaturActivityContract.Creat
             }else{
                 presenter?.update(token, getDonatur()?.id.toString(), nama, jenis_kebutuhan, keterangan, alamat, id_posko, tanggal, jumlah, satuan)
             }
+        }
 
+        sheenValidator.registerAsRequired(binding.etNama)
+        sheenValidator.registerAsRequired(binding.etKeterangan)
+        sheenValidator.registerAsRequired(binding.etAlamat)
+        sheenValidator.registerHasMinLength(binding.etAlamat, 4)
+        sheenValidator.registerAsRequired(binding.etTanggal)
+        sheenValidator.registerAsRequired(binding.etJumlah)
+
+        binding.btnSubmit.setOnClickListener {
+            sheenValidator.validate()
         }
     }
 

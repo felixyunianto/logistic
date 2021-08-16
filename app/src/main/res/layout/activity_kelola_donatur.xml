@@ -184,9 +184,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView3"
                 tools:layout_editor_absoluteX="20dp">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etJumlah"
                     android:layout_width="match_parent"
+                    android:inputType="number"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 

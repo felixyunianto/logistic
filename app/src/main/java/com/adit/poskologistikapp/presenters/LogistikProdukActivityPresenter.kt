@@ -50,7 +50,7 @@ class LogistikProdukActivityPresenter(v : LogistikProdukActivityContract.Logisti
     override fun getLogistikProdukByPosko(id_posko: String) {
         val request = apiService.getLogistikProdukByPosko(id_posko)
         view?.showLoading()
-        request.enqueue(object : Callback<WrappedListResponse<Logistik>> {
+        request.enqueue(object : Callback<WrappedListResponse<Logistik>>{
             override fun onResponse(
                 call: Call<WrappedListResponse<Logistik>>,
                 response: Response<WrappedListResponse<Logistik>>
@@ -76,6 +76,7 @@ class LogistikProdukActivityPresenter(v : LogistikProdukActivityContract.Logisti
                 view?.showToast("Tidak bisa koneksi ke server")
                 view?.hideLoading()
                 println(t.message)
+                println("ON FAILURE "+ t.localizedMessage)
             }
 
         })

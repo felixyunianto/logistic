@@ -13,8 +13,6 @@ data class Logistik(
     @SerializedName("satuan") var satuan : String,
     @SerializedName("created_at") var created_at : String,
     @SerializedName("updated_at") var updated_at : String,
-    @SerializedName("posko") var posko : Posko,
-    @SerializedName("produk") var produk : Logistik,
 
 ) : Parcelable {
     override fun toString(): String {

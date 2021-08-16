@@ -26,6 +26,7 @@ import com.esafirm.imagepicker.features.ImagePickerConfig
 import com.esafirm.imagepicker.features.ImagePickerMode
 import com.esafirm.imagepicker.features.registerImagePicker
 import com.esafirm.imagepicker.model.Image
+import id.rizmaulana.sheenvalidator.lib.SheenValidator
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -40,6 +41,7 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
     private var choosedImage: Image? = null
     private var image : MultipartBody.Part? = null
     private var presenter : LogistikMasukActivityContract.CreateOrUpdatePresenter? = null
+    private lateinit var sheenValidator: SheenValidator
     @RequiresApi(Build.VERSION_CODES.O)
     val currentDateTime = LocalDateTime.now()
 
@@ -49,6 +51,7 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
         supportActionBar?.hide()
         binding = ActivityKelolaLogistikMasukBinding.inflate(layoutInflater)
         presenter = KelolaLogistikMasukActivityPresenter(this)
+        sheenValidator = SheenValidator(this)
         setContentView(binding.root)
         handleRadioButton()
         openDatePicker()
@@ -97,11 +100,14 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
             val radioSelected = findViewById<RadioButton>(checkedId)
             produkKonsidi = radioSelected.text.toString().lowercase()
             if(radioSelected.text.toString() == "Baru"){
+                binding.etNama.setText("")
                 binding.inNama.visibility = View.VISIBLE
                 binding.rlProduk.visibility = View.GONE
             }else{
+                binding.etNama.setText("Baru")
                 binding.inNama.visibility = View.GONE
                 binding.rlProduk.visibility = View.VISIBLE
+                binding.satuan.visibility = View.GONE
             }
         }
     }
@@ -202,17 +208,12 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
     }
 
     private fun doSave(){
-        binding.btnSubmit.setOnClickListener {
+        sheenValidator.setOnValidatorListener {
+            showLoading()
             val token = Constants.getToken(this)
             val baru = RequestBody.create(
                 MultipartBody.FORM, produkKonsidi
             )
-            val objectProduk = binding.spinnerProduk.selectedItem as Logistik
-            val id_produk = RequestBody.create(
-                MultipartBody.FORM, objectProduk.id
-            )
-
-            println("ID PRODUK " + produkKonsidi == "baru")
 
             val nama_produk = RequestBody.create(
                 MultipartBody.FORM, binding.etNama.text.toString()
@@ -232,15 +233,13 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
                 MultipartBody.FORM, binding.etPengirim.text.toString()
             )
 
-            val satuan = RequestBody.create(
-                MultipartBody.FORM, objectProduk.satuan
-            )
             val status = RequestBody.create(
                 MultipartBody.FORM, "Proses"
             )
             val tanggal = RequestBody.create(
                 MultipartBody.FORM, binding.etTanggal.text.toString()
             )
+
             if(choosedImage != null){
                 var originalFile = File(choosedImage?.path!!)
 
@@ -258,13 +257,51 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
 
             if(isNew()){
                 if(produkKonsidi == "baru"){
-                    presenter?.createNew(token, jenis_kebutuhan, keterangan, jumlah, pengirim, satuan, status, tanggal, image!!, baru, nama_produk )
+                    val satuanBaru = RequestBody.create(
+                        MultipartBody.FORM, binding.spinnerSatuan.selectedItem.toString()
+                    )
+                    presenter?.createNew(token, jenis_kebutuhan, keterangan, jumlah, pengirim, satuanBaru, status, tanggal, image!!, baru, nama_produk )
                 }else{
+                    val objectProduk = binding.spinnerProduk.selectedItem as Logistik
+                    val id_produk = RequestBody.create(
+                        MultipartBody.FORM, objectProduk.id
+                    )
+
+                    val satuan = RequestBody.create(
+                        MultipartBody.FORM, objectProduk.satuan
+                    )
                     presenter?.create(token, jenis_kebutuhan, keterangan, jumlah, pengirim, satuan, status, tanggal, image!!, id_produk)
                 }
             }else{
+                val objectProduk = binding.spinnerProduk.selectedItem as Logistik
+                val id_produk = RequestBody.create(
+                    MultipartBody.FORM, objectProduk.id
+                )
+
+                val satuan = RequestBody.create(
+                    MultipartBody.FORM, objectProduk.satuan
+                )
+
                 presenter?.update(token!!, getMasuk()?.id, jenis_kebutuhan, keterangan, jumlah, pengirim, satuan, status, tanggal, image!!, id_produk)
             }
+        }
+
+        if(produkKonsidi == "baru"){
+            sheenValidator.registerAsRequired(if(produkKonsidi == "baru") binding.etNama else null!!)
+            sheenValidator.registerAsRequired(binding.etKeterangan)
+            sheenValidator.registerAsRequired(binding.etJumlah)
+            sheenValidator.registerAsRequired(binding.etPengirim)
+            sheenValidator.registerAsRequired(binding.etTanggal)
+        }else{
+            sheenValidator.registerAsRequired(binding.etKeterangan)
+            sheenValidator.registerAsRequired(binding.etJumlah)
+            sheenValidator.registerAsRequired(binding.etPengirim)
+            sheenValidator.registerAsRequired(binding.etTanggal)
+        }
+
+
+        binding.btnSubmit.setOnClickListener {
+            sheenValidator.validate()
         }
     }
 

@@ -18,19 +18,23 @@ import com.adit.poskologistikapp.models.Posko
 import com.adit.poskologistikapp.presenters.KelolaPenyaluranPresenter
 import com.adit.poskologistikapp.presenters.PenyaluranPresenter
 import com.adit.poskologistikapp.utilities.Constants
+import id.rizmaulana.sheenvalidator.lib.SheenValidator
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class KelolaPenyaluranActivity : AppCompatActivity(), PenyaluranContract.CreateOrUpdateView {
     private lateinit var binding : ActivityKelolaPenyaluranBinding
     private var presenter : PenyaluranContract.CreateOrUpdatePresenter? = null
+    private lateinit var sheenValidator : SheenValidator
     @RequiresApi(Build.VERSION_CODES.O)
     val currentDateTime = LocalDateTime.now()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityKelolaPenyaluranBinding.inflate(layoutInflater)
         presenter = KelolaPenyaluranPresenter(this)
+        sheenValidator = SheenValidator(this)
         setContentView(binding.root)
         setupSpinner()
         doSave()
@@ -50,7 +54,7 @@ class KelolaPenyaluranActivity : AppCompatActivity(), PenyaluranContract.CreateO
 
         if(!isNew()){
             for(item in produk.indices){
-                if(produk[item].id == getPenyaluran()?.penerima_id){
+                if(produk[item].id == getPenyaluran()?.id_produk){
                     binding.spinnerProduk.setSelection(item)
                 }
             }
@@ -134,7 +138,8 @@ class KelolaPenyaluranActivity : AppCompatActivity(), PenyaluranContract.CreateO
     }
 
     private fun doSave(){
-        binding.btnSubmit.setOnClickListener {
+        sheenValidator.setOnValidatorListener {
+            showLoading()
             val token = Constants.getToken(this)
             val objectProduk = binding.spinnerProduk.selectedItem as Logistik
 
@@ -153,6 +158,15 @@ class KelolaPenyaluranActivity : AppCompatActivity(), PenyaluranContract.CreateO
             if(isNew()){
                 presenter?.create(token, jenis_kebutuhan, keterangan, jumlah, status, satuan, tanggal, id_produk, penerima)
             }
+        }
+
+        sheenValidator.registerAsRequired(binding.etKeterangan)
+        sheenValidator.registerAsRequired(binding.etJumlah)
+        sheenValidator.registerAsRequired(binding.etTerima)
+
+
+        binding.btnSubmit.setOnClickListener {
+            sheenValidator.validate()
         }
     }
 

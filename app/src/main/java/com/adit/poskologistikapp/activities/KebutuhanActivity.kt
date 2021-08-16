@@ -83,9 +83,13 @@ class KebutuhanActivity : AppCompatActivity(), KebutuhanActivityContract.Kebutuh
     private fun showHideFab(){
         val list = Constants.getList(this)
         val user = Gson().fromJson(list, User::class.java)
-
-        if(user.id_posko != getIdPosko()){
+        val token = Constants.getToken(this)
+        if(token == "UNDEFINED"){
             binding.fab.visibility = View.GONE
+        }else{
+            if(user.id_posko != getIdPosko()){
+                binding.fab.visibility = View.GONE
+            }
         }
     }
 

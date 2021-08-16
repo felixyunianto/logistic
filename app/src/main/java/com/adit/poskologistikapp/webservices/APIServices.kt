@@ -188,9 +188,9 @@ interface APIServices {
         @Header("Authorization") token : String,
     ) : Call<WrappedListResponse<Logistik>>
 
-    @GET("logistik-produk/posko/{id_posko}")
+    @GET("logistik-produk/posko/{id}")
     fun getLogistikProdukByPosko(
-        @Path("id_posko") id_posko : String,
+        @Path("id") id : String,
     ) : Call<WrappedListResponse<Logistik>>
 
     @FormUrlEncoded

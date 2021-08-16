@@ -6,6 +6,7 @@ import com.adit.poskologistikapp.responses.WrappedResponse
 import com.adit.poskologistikapp.utilities.APIClient
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,7 +37,8 @@ class KelolaBencanaActivityPresenter(v : BencanaActivityContract.CreateOrUpdateV
                         view?.showToast(body?.message!!)
                     }
                 }else{
-                    view?.showToast(response.message())
+                    var errorBody = JSONObject(response.errorBody()?.string())
+                    view?.showToast(errorBody.getString("error"))
                     println("RESPONSE " + response)
                 }
                 view?.hideLoading()

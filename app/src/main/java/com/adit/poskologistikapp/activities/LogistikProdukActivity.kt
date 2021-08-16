@@ -40,6 +40,7 @@ class LogistikProdukActivity : AppCompatActivity(), LogistikProdukActivityContra
     }
 
     override fun attachToRecycler(logistik: List<Logistik>) {
+        println("DATA OGISIK " + logistik)
         adapterLogistik = LogistikProdukActivityAdapter(logistik, this@LogistikProdukActivity, object: onClickLogistikAdapter{
             override fun edit(logistik: Logistik) {
                 val intent = Intent(this@LogistikProdukActivity, KelolaLogistikActivity::class.java).apply {
@@ -99,10 +100,11 @@ class LogistikProdukActivity : AppCompatActivity(), LogistikProdukActivityContra
 
     private fun getData(){
         val token = Constants.getToken(this@LogistikProdukActivity)
+
         if(isFromBeranda()){
             presenter?.getLogistikProduk(token)
         }else{
-            getIdPosko()?.let { presenter?.getLogistikProdukByPosko(it) }
+            presenter?.getLogistikProdukByPosko(getIdPosko().toString())
         }
     }
 

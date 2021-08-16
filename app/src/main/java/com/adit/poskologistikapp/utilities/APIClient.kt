@@ -59,6 +59,11 @@ class Constants {
             return list?.getString("USERDATA", null)
         }
 
+        fun clearList(context: Context){
+            val pref = context.getSharedPreferences("USERDATA", MODE_PRIVATE)
+            pref.edit().clear().apply()
+        }
+
         fun getLevel(context: Context): String{
             val pref = context.getSharedPreferences("LEVEL", MODE_PRIVATE)
             val level = pref?.getString("LEVEL", "UNDEFINED")

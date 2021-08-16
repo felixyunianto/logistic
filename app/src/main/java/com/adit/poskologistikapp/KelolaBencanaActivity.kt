@@ -21,6 +21,7 @@ import com.esafirm.imagepicker.features.ImagePickerConfig
 import com.esafirm.imagepicker.features.ImagePickerMode
 import com.esafirm.imagepicker.features.registerImagePicker
 import com.esafirm.imagepicker.model.Image
+import id.rizmaulana.sheenvalidator.lib.SheenValidator
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -34,6 +35,7 @@ class KelolaBencanaActivity : AppCompatActivity(), BencanaActivityContract.Creat
     private lateinit var tanggal : String
     private var choosedImage: Image? = null
     private var image : MultipartBody.Part? = null
+    private lateinit var sheenValidator : SheenValidator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,7 @@ class KelolaBencanaActivity : AppCompatActivity(), BencanaActivityContract.Creat
         setContentView(binding.root)
         openDatePicker()
         presenter = KelolaBencanaActivityPresenter(this)
+        sheenValidator = SheenValidator(this)
         supportActionBar?.hide()
         binding.etTanggal.inputType = InputType.TYPE_NULL
         binding.imageView.setOnClickListener {
@@ -113,7 +116,7 @@ class KelolaBencanaActivity : AppCompatActivity(), BencanaActivityContract.Creat
     }
 
     private fun doSave(){
-        binding.btnSubmit.setOnClickListener {
+        sheenValidator.setOnValidatorListener {
             showLoading()
             val token = Constants.getToken(this@KelolaBencanaActivity)
             val nama = RequestBody.create(
@@ -147,7 +150,7 @@ class KelolaBencanaActivity : AppCompatActivity(), BencanaActivityContract.Creat
             if(isNew()){
                 if(choosedImage == null){
                     showAlertDialog("Silahkan pilih foto")
-                    return@setOnClickListener
+                    return@setOnValidatorListener
                 }
                 presenter?.create(token!!, nama, image!!, detail, tanggal)
             }else{
@@ -157,6 +160,14 @@ class KelolaBencanaActivity : AppCompatActivity(), BencanaActivityContract.Creat
                     presenter?.update(token!!, getBencana()!!.id.toString(), nama, image!!,detail, tanggal, methodBody)
                 }
             }
+        }
+
+        sheenValidator.registerAsRequired(binding.etNama)
+        sheenValidator.registerAsRequired(binding.etDetail)
+        sheenValidator.registerAsRequired(binding.etTanggal)
+
+        binding.btnSubmit.setOnClickListener {
+            sheenValidator.validate()
         }
     }
 

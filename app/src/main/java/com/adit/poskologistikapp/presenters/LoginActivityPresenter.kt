@@ -7,6 +7,7 @@ import com.adit.poskologistikapp.responses.WrappedResponse
 import com.adit.poskologistikapp.utilities.APIClient
 import com.adit.poskologistikapp.utilities.Constants
 import com.google.gson.Gson
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +33,8 @@ class LoginActivityPresenter(v: LoginActivityContract.LoginActivityView?) : Logi
                         view?.successLogin(body.data)
                     }
                 }else{
-                    view?.showToast("Terjadi kesalahan, silahkan coba lagi lain waktu")
+                    var errorBody = JSONObject(response.errorBody()?.string())
+                    view?.showToast(errorBody.getString("data"))
                 }
                 view?.hideLoading()
             }

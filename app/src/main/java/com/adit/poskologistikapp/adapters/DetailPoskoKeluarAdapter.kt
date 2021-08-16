@@ -16,7 +16,7 @@ class DetailPoskoKeluarAdapter(private var keluar : List<LogistikKeluar>) : Recy
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.binding.tvJumlah.text = keluar[position].jumlah
-        holder.binding.tvNama.text = keluar[position].pengirim
+        holder.binding.tvNama.text = keluar[position].nama_produk
         holder.binding.tvTanggal.text = keluar[position].tanggal
     }
 

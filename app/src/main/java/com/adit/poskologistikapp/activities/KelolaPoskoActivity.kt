@@ -11,10 +11,12 @@ import com.adit.poskologistikapp.databinding.ActivityKelolaPoskoBinding
 import com.adit.poskologistikapp.models.Posko
 import com.adit.poskologistikapp.presenters.KelolaPoskoPresenter
 import com.adit.poskologistikapp.utilities.Constants
+import id.rizmaulana.sheenvalidator.lib.SheenValidator
 
 class KelolaPoskoActivity : AppCompatActivity(), PoskoActivityContract.CreateOrUpdateView {
     private lateinit var binding : ActivityKelolaPoskoBinding
     private var presenter : PoskoActivityContract.CreateOrUpdateInteraction? = null
+    private lateinit var sheenValidator : SheenValidator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +24,7 @@ class KelolaPoskoActivity : AppCompatActivity(), PoskoActivityContract.CreateOrU
         setContentView(binding.root)
         supportActionBar?.hide()
         presenter = KelolaPoskoPresenter(this)
+        sheenValidator = SheenValidator(this)
         binding.btnLatlong.setOnClickListener {
             val intent = Intent(this@KelolaPoskoActivity, LocationPickerActivity::class.java)
             startActivityForResult(intent, 1)
@@ -91,7 +94,7 @@ class KelolaPoskoActivity : AppCompatActivity(), PoskoActivityContract.CreateOrU
     }
 
     private fun doSave(){
-        binding.btnSubmit.setOnClickListener {
+        sheenValidator.setOnValidatorListener {
             val token = Constants.getToken(this)
             val nama = binding.etNama.text.toString()
             val jumlah_pengungsi = binding.etJumlah.text.toString()
@@ -105,7 +108,18 @@ class KelolaPoskoActivity : AppCompatActivity(), PoskoActivityContract.CreateOrU
             }else{
                 presenter?.update(token!!, getPosko()!!.id.toString(), nama, jumlah_pengungsi, kontak_hp, lokasi, longitude, latitude)
             }
+        }
 
+        sheenValidator.registerAsRequired(binding.etNama)
+        sheenValidator.registerAsRequired(binding.etJumlah)
+        sheenValidator.registerAsRequired(binding.etNoHp)
+        sheenValidator.registerAsRequired(binding.etLokasi)
+
+        binding.btnSubmit.setOnClickListener {
+            if(binding.etLat.text.toString().isEmpty()){
+                return@setOnClickListener showToast("Silahkan pilih titik koordinat lokasi")
+            }
+            sheenValidator.validate()
         }
     }
 

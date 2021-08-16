@@ -13,10 +13,12 @@ import com.adit.poskologistikapp.databinding.ActivityLogistikProdukBinding
 import com.adit.poskologistikapp.models.Logistik
 import com.adit.poskologistikapp.presenters.KelolaLogistikProdukActivityPresenter
 import com.adit.poskologistikapp.utilities.Constants
+import id.rizmaulana.sheenvalidator.lib.SheenValidator
 
 class KelolaLogistikActivity : AppCompatActivity(), LogistikProdukActivityContract.CreateOrUpdateView {
     private lateinit var binding : ActivityKelolaLogistikBinding
     private var presenter : LogistikProdukActivityContract.CreateOrUpdatePresenter? = null
+    private lateinit var sheenValidator : SheenValidator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +27,9 @@ class KelolaLogistikActivity : AppCompatActivity(), LogistikProdukActivityContra
         supportActionBar?.hide()
         setupSpinner()
         fill()
-        doSave()
         presenter = KelolaLogistikProdukActivityPresenter(this)
+        sheenValidator = SheenValidator(this)
+        doSave()
     }
 
     override fun showToast(message: String) {
@@ -79,7 +82,7 @@ class KelolaLogistikActivity : AppCompatActivity(), LogistikProdukActivityContra
     }
 
     private fun doSave(){
-        binding.btnSubmit.setOnClickListener {
+        sheenValidator.setOnValidatorListener {
             val token = Constants.getToken(this)
             val nama_produk = binding.etNama.text.toString()
             val jumlah = binding.etJumlah.text.toString()
@@ -90,6 +93,13 @@ class KelolaLogistikActivity : AppCompatActivity(), LogistikProdukActivityContra
             }else{
                 presenter?.update(token, getLogistik()?.id.toString(), nama_produk, jumlah, satuan)
             }
+        }
+
+        sheenValidator.registerAsRequired(binding.etNama)
+        sheenValidator.registerAsRequired(binding.etJumlah)
+
+        binding.btnSubmit.setOnClickListener {
+            sheenValidator.validate()
         }
     }
 

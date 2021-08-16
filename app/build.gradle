@@ -78,4 +78,10 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
 
+    //Sheen Validator
+    implementation 'com.github.rizmaulana:SheenValidator:0.2.3'
+
+    //PERSMISSION
+    implementation 'com.github.florent37:runtime-permission-kotlin:1.1.2'
+
 }

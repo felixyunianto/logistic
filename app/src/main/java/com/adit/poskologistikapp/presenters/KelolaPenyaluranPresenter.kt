@@ -8,6 +8,7 @@ import com.adit.poskologistikapp.models.Posko
 import com.adit.poskologistikapp.responses.WrappedListResponse
 import com.adit.poskologistikapp.responses.WrappedResponse
 import com.adit.poskologistikapp.utilities.APIClient
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +33,8 @@ class KelolaPenyaluranPresenter(v : PenyaluranContract.CreateOrUpdateView?) : Pe
                         view?.showToast(body?.message!!)
                     }
                 }else{
-                    view?.showToast(response.message())
+                    var errorBody = JSONObject(response.errorBody()?.string())
+                    view?.showToast(errorBody.getString("message"))
                 }
             }
 
@@ -66,9 +68,13 @@ class KelolaPenyaluranPresenter(v : PenyaluranContract.CreateOrUpdateView?) : Pe
                     val body = response.body()
                     if(body != null){
                         view?.showToast(body.message)
+                        view?.success()
                     }else{
                         view?.showToast(body?.message!!)
                     }
+                }else{
+                    var errorBody = JSONObject(response.errorBody()?.string())
+                    view?.showToast(errorBody.getString("message"))
                 }
                 view?.hideLoading()
             }

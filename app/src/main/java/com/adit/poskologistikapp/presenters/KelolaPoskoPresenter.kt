@@ -5,6 +5,7 @@ import com.adit.poskologistikapp.contracts.PoskoActivityContract
 import com.adit.poskologistikapp.models.Posko
 import com.adit.poskologistikapp.responses.WrappedResponse
 import com.adit.poskologistikapp.utilities.APIClient
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,7 +41,8 @@ class KelolaPoskoPresenter(v : PoskoActivityContract.CreateOrUpdateView?) : Posk
                         view?.hideLoading()
                     }
                 }else{
-                    view?.showToast(response.message())
+                    var errorBody = JSONObject(response.errorBody()?.string())
+                    view?.showToast(errorBody.getString("error"))
                     view?.hideLoading()
                 }
             }

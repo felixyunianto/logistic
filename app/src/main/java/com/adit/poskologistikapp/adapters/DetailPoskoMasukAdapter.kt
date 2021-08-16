@@ -15,7 +15,7 @@ class DetailPoskoMasukAdapter(private var masuk : List<LogistikMasuk>) : Recycle
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.binding.tvJumlah.text = masuk[position].jumlah
-        holder.binding.tvNama.text = masuk[position].pengirim
+        holder.binding.tvNama.text = masuk[position].nama_produk
         holder.binding.tvTanggal.text = masuk[position].tanggal
     }
 

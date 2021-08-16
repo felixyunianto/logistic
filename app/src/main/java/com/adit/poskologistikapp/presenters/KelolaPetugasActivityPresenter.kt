@@ -6,6 +6,7 @@ import com.adit.poskologistikapp.models.Posko
 import com.adit.poskologistikapp.responses.WrappedListResponse
 import com.adit.poskologistikapp.responses.WrappedResponse
 import com.adit.poskologistikapp.utilities.APIClient
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,7 +39,8 @@ class KelolaPetugasActivityPresenter(v : PetugasActivityContract.CreateOrUpdateV
                         view?.showToast(body?.message!!)
                     }
                 }else{
-                    view?.showToast(response.message())
+                    var errorBody = JSONObject(response.errorBody()?.string())
+                    view?.showToast(errorBody.getString("error"))
                 }
                 view?.hideLoading()
             }

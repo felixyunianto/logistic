@@ -41,6 +41,7 @@ class ProfileFragment : Fragment() {
         binding.logout.setOnClickListener {
             Constants.clearToken(requireActivity())
             checkAuthentication()
+            Constants.clearList(requireActivity())
         }
 
         binding.login.setOnClickListener {

@@ -6,22 +6,24 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.adit.poskologistikapp.R
 import com.adit.poskologistikapp.contracts.PetugasActivityContract
 import com.adit.poskologistikapp.databinding.ActivityKelolaPetugasBinding
 import com.adit.poskologistikapp.models.Petugas
 import com.adit.poskologistikapp.models.Posko
 import com.adit.poskologistikapp.presenters.KelolaPetugasActivityPresenter
 import com.adit.poskologistikapp.utilities.Constants
+import id.rizmaulana.sheenvalidator.lib.SheenValidator
 
 class KelolaPetugasActivity : AppCompatActivity(), PetugasActivityContract.CreateOrUpdateView {
     private lateinit var binding : ActivityKelolaPetugasBinding
     private var presenter : PetugasActivityContract.CreateOrUpdatePresenter? = null
+    private lateinit var sheenValidator : SheenValidator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityKelolaPetugasBinding.inflate(layoutInflater)
         presenter = KelolaPetugasActivityPresenter(this)
+        sheenValidator = SheenValidator(this)
         supportActionBar?.hide()
         setContentView(binding.root)
         fill()
@@ -79,7 +81,7 @@ class KelolaPetugasActivity : AppCompatActivity(), PetugasActivityContract.Creat
     }
 
     private fun doSave(){
-        binding.btnSubmit.setOnClickListener {
+        sheenValidator.setOnValidatorListener {
             val token = Constants.getToken(this)
             var username = binding.etUsername.text.toString()
             var password = binding.etPassWord.text.toString()
@@ -91,10 +93,23 @@ class KelolaPetugasActivity : AppCompatActivity(), PetugasActivityContract.Creat
             var id_posko = objectPosko.id
 
             if(isNew()){
-                presenter?.create(token!!, username, password, konfirmasi_password, level.toString(), id_posko.toString())
+                if(password != konfirmasi_password){
+                    showToast("Password tidak sama")
+                }else{
+                    presenter?.create(token!!, username, password, konfirmasi_password, level.toString(), id_posko.toString())
+                }
             }else{
                 presenter?.update(token!!, getPetugas()?.id.toString(), username, password, konfirmasi_password, level.toString(), id_posko.toString())
             }
+        }
+
+        sheenValidator.registerAsRequired(binding.etUsername)
+        sheenValidator.registerAsRequired(binding.etPassWord)
+        sheenValidator.registerHasMinLength(binding.etPassWord, 8)
+        sheenValidator.registerAsRequired(binding.etConfirmPass)
+
+        binding.btnSubmit.setOnClickListener {
+            sheenValidator.validate()
         }
     }
 
