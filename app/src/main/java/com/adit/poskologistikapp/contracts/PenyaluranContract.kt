@@ -16,6 +16,7 @@ interface PenyaluranContract {
 
     interface presenter{
         fun getLogistikProduk(token : String)
+        fun delete(token : String, id: String)
         //        fun deleteLogistik(token: String, id : String)
         fun destroy()
     }

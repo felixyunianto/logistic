@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adit.poskologistikapp.R
 import com.adit.poskologistikapp.adapters.PenyaluranAdapter
+import com.adit.poskologistikapp.adapters.onClickPenyaluranAdapter
 import com.adit.poskologistikapp.contracts.PenyaluranContract
 import com.adit.poskologistikapp.databinding.ActivityPenyaluranBinding
 import com.adit.poskologistikapp.models.Penyaluran
@@ -50,9 +51,28 @@ class PenyaluranActivity : AppCompatActivity(), PenyaluranContract.View {
 
     override fun attachToRecycler(penyaluran: List<Penyaluran>) {
         binding.rvPetugas.apply {
-            adapter = PenyaluranAdapter(penyaluran)
+            adapter = PenyaluranAdapter(penyaluran, object: onClickPenyaluranAdapter{
+                override fun edit(penyaluran: Penyaluran) {
+                    val intent = Intent(this@PenyaluranActivity, KelolaPenyaluranActivity::class.java).apply {
+                        putExtra("IS_NEW", false)
+                        putExtra("PENYALURAN", penyaluran)
+                    }
+                    startActivity(intent)
+                }
+
+                override fun delete(penyaluran: Penyaluran) {
+                    delete(penyaluran.id)
+                }
+
+            })
             layoutManager = LinearLayoutManager(this@PenyaluranActivity)
         }
+    }
+
+    private fun delete(id : String){
+        showLoading()
+        val token = Constants.getToken(this)
+        presenter?.delete(token, id)
     }
 
     override fun showToast(message: String) {

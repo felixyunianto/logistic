@@ -27,13 +27,13 @@ class LogistikKeluarActivityAdapter(private var logistik_keluar : List<LogistikK
         holder.binding.tvTanggal.text = logistik_keluar[position].tanggal
         holder.binding.tvStatus.text = logistik_keluar[position].status
 
-//        holder.binding.btnEdit.setOnClickListener {
-//            listener.edit(logistik_keluar[position])
-//        }
-//
-//        holder.binding.btnHapus.setOnClickListener {
-//            listener.delete(logistik_keluar[position])
-//        }
+        holder.binding.btnEdit.setOnClickListener {
+            listener.edit(logistik_keluar[position])
+        }
+
+        holder.binding.btnHapus.setOnClickListener {
+            listener.delete(logistik_keluar[position])
+        }
     }
 
     override fun getItemCount() = logistik_keluar.size

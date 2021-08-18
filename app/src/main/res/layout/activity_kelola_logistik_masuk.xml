@@ -167,6 +167,13 @@
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:layout_marginBottom="5dp"
+                android:textSize="16sp"/>
+
             <RelativeLayout
                 android:id="@+id/satuan"
                 android:layout_width="match_parent"

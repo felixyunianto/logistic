@@ -31,7 +31,8 @@ interface LogistikMasukActivityContract {
     interface CreateOrUpdatePresenter{
         fun create(token : String, jenis_kebutuhan : RequestBody,keterangan : RequestBody, jumlah : RequestBody, pengirim : RequestBody, satuan : RequestBody, status : RequestBody, tanggal : RequestBody, foto : MultipartBody.Part, id_produk : RequestBody)
         fun createNew(token : String, jenis_kebutuhan : RequestBody,keterangan : RequestBody, jumlah : RequestBody, pengirim : RequestBody, satuan : RequestBody, status : RequestBody, tanggal : RequestBody, foto : MultipartBody.Part, baru : RequestBody, nama_produk :RequestBody)
-        fun update(token : String, id : String, jenis_kebutuhan : RequestBody,keterangan : RequestBody, jumlah : RequestBody, pengirim : RequestBody, satuan : RequestBody, status : RequestBody, tanggal : RequestBody, foto : MultipartBody.Part, id_produk : RequestBody)
+        fun update(token : String, id : String, jenis_kebutuhan : RequestBody,keterangan : RequestBody, jumlah : RequestBody, pengirim : RequestBody, satuan : RequestBody, status : RequestBody, tanggal : RequestBody, foto : MultipartBody.Part, id_produk : RequestBody, _method : RequestBody)
+        fun updateTanpaFoto(token : String, id : String, jenis_kebutuhan : RequestBody,keterangan : RequestBody, jumlah : RequestBody, pengirim : RequestBody, satuan : RequestBody, status : RequestBody, tanggal : RequestBody, id_produk : RequestBody, _method : RequestBody)
         fun getLogistikProduk(token : String)
         fun destroy()
     }

@@ -113,6 +113,8 @@ class KelolaPoskoActivity : AppCompatActivity(), PoskoActivityContract.CreateOrU
         sheenValidator.registerAsRequired(binding.etNama)
         sheenValidator.registerAsRequired(binding.etJumlah)
         sheenValidator.registerAsRequired(binding.etNoHp)
+        sheenValidator.registerHasMaxLength(binding.etNoHp,13)
+        sheenValidator.registerHasMinLength(binding.etNoHp,10)
         sheenValidator.registerAsRequired(binding.etLokasi)
 
         binding.btnSubmit.setOnClickListener {

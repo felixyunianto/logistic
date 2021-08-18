@@ -3,12 +3,17 @@ package com.adit.poskologistikapp.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Transformations.map
@@ -23,6 +28,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import okio.IOException
 
 class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
     private lateinit var binding : ActivityLocationPickerBinding
@@ -30,13 +36,16 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMa
     private lateinit var googleMap: GoogleMap
     private lateinit var myLocation : Location
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var searchView : SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationPickerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
 
         mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        searchLocation()
         mapFragment.getMapAsync({
             googleMap = it
             googleMap?.setOnMapClickListener(this@LocationPickerActivity)
@@ -44,6 +53,41 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMa
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this@LocationPickerActivity)
         getLocation()
+    }
+
+    private fun searchLocation() {
+        binding.searchView.setOnQueryTextListener(object : OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                var location : String = binding.searchView.query.toString()
+
+                var addressList : List<Address>? = null
+
+                if(location != null || location.equals("")){
+                    var geocoder = Geocoder(this@LocationPickerActivity)
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1)
+                    }catch (e : IOException){
+                        e.printStackTrace()
+                    }
+
+                    var address : Address = addressList!!.get(0)
+
+                    var latLng = LatLng(address.latitude, address.longitude)
+
+                    googleMap.clear()
+                    googleMap.addMarker(MarkerOptions().position(latLng).title(location))
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+
+                }
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+        })
     }
 
     override fun onMapReady(p0: GoogleMap) {
@@ -79,14 +123,23 @@ class LocationPickerActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMa
         val marker = MarkerOptions().position(LatLng(p0!!.latitude, p0.longitude))
         googleMap.clear()
         googleMap.addMarker(marker)
+        showAlertDialog("Apakah anda yakin?", p0)
+    }
 
-        println("PICK LAT " + p0.latitude)
-        println("PICK LONG " + p0.longitude)
-        val returnIntent = Intent(this@LocationPickerActivity, KelolaPoskoActivity::class.java).apply {
-            putExtra("LATITUDE", p0.latitude.toString())
-            putExtra("LONGITUDE", p0.longitude.toString())
-        }
-        setResult(Activity.RESULT_OK, returnIntent)
-        finish()
+    private fun showAlertDialog(message: String, latLng : LatLng){
+        AlertDialog.Builder(this@LocationPickerActivity).apply {
+            setMessage(message)
+            setPositiveButton("OK"){ d, _ ->
+                val returnIntent = Intent(this@LocationPickerActivity, KelolaPoskoActivity::class.java).apply {
+                    putExtra("LATITUDE", latLng.latitude.toString())
+                    putExtra("LONGITUDE", latLng.longitude.toString())
+                }
+                setResult(Activity.RESULT_OK, returnIntent)
+                finish()
+            }
+            setNegativeButton("Tidak"){d, _ ->
+                d.cancel()
+            }
+        }.show()
     }
 }

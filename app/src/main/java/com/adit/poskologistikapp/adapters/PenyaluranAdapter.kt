@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.adit.poskologistikapp.databinding.ItemPenyaluranBinding
 import com.adit.poskologistikapp.models.Penyaluran
 
-class PenyaluranAdapter(private var penyaluran : List<Penyaluran>) : RecyclerView.Adapter<PenyaluranAdapter.MyViewHolder>() {
+class PenyaluranAdapter(private var penyaluran : List<Penyaluran>, private var listener : onClickPenyaluranAdapter) : RecyclerView.Adapter<PenyaluranAdapter.MyViewHolder>() {
     inner class MyViewHolder (val binding : ItemPenyaluranBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -20,6 +20,14 @@ class PenyaluranAdapter(private var penyaluran : List<Penyaluran>) : RecyclerVie
         holder.binding.tvJumlah.text = penyaluran[position].jumlah
         holder.binding.tvTanggal.text = penyaluran[position].tanggal
         holder.binding.tvStatus.text = penyaluran[position].status
+
+        holder.binding.btnEdit.setOnClickListener {
+            listener.edit(penyaluran[position])
+        }
+
+        holder.binding.btnHapus.setOnClickListener {
+            listener.delete(penyaluran[position])
+        }
 
     }
 

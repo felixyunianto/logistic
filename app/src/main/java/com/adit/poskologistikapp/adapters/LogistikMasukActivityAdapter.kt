@@ -25,13 +25,13 @@ class LogistikMasukActivityAdapter(private var logistik_masuk : List<LogistikMas
         holder.binding.tvSatuan.text = logistik_masuk[position].satuan
         holder.binding.ivFoto.load(logistik_masuk[position].foto)
 
-//        holder.binding.btnEdit.setOnClickListener {
-//            listener.edit(logistik_masuk[position])
-//        }
-//
-//        holder.binding.btnHapus.setOnClickListener {
-//            listener.delete(logistik_masuk[position])
-//        }
+        holder.binding.btnEdit.setOnClickListener {
+            listener.edit(logistik_masuk[position])
+        }
+
+        holder.binding.btnHapus.setOnClickListener {
+            listener.delete(logistik_masuk[position])
+        }
     }
 
     override fun getItemCount() = logistik_masuk.size

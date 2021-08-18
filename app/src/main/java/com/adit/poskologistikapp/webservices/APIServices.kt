@@ -255,6 +255,40 @@ interface APIServices {
         @Part("nama_produk") nama_produk : RequestBody,
     ) : Call<WrappedResponse<LogistikMasuk>>
 
+    @Multipart
+    @POST("logistik-masuk/{id}")
+    fun editLogistikMasuk(
+        @Header("Authorization") token : String,
+        @Path("id") id : String,
+        @Part("jenis_kebutuhan") jenis_kebutuhan : RequestBody,
+        @Part("keterangan") keterangan : RequestBody,
+        @Part("jumlah") jumlah : RequestBody,
+        @Part("pengirim") pengirim : RequestBody,
+        @Part("satuan") satuan : RequestBody,
+        @Part("status") status : RequestBody,
+        @Part("tanggal") tanggal : RequestBody,
+        @Part foto : MultipartBody.Part,
+        @Part("id_produk") id_produk : RequestBody,
+        @Part("_method") _method : RequestBody,
+    ) : Call<WrappedResponse<LogistikMasuk>>
+
+    @Multipart
+    @POST("logistik-masuk/{id}")
+    fun editLogistikMasukTanpaFoto(
+        @Header("Authorization") token : String,
+        @Path("id") id : String,
+        @Part("jenis_kebutuhan") jenis_kebutuhan : RequestBody,
+        @Part("keterangan") keterangan : RequestBody,
+        @Part("jumlah") jumlah : RequestBody,
+        @Part("pengirim") pengirim : RequestBody,
+        @Part("satuan") satuan : RequestBody,
+        @Part("status") status : RequestBody,
+        @Part("tanggal") tanggal : RequestBody,
+        @Part("id_produk") id_produk : RequestBody,
+        @Part("_method") _method : RequestBody,
+    ) : Call<WrappedResponse<LogistikMasuk>>
+
+
     @DELETE("logistik-masuk/{id}")
     fun deleteLogistikMasuk(
         @Header("Authorization") token : String,
@@ -350,6 +384,27 @@ interface APIServices {
         @Field("tanggal") tanggal : String,
         @Field("id_produk") id_produk : String,
         @Field("penerima") penerima : String,
+    ) : Call<WrappedResponse<Penyaluran>>
+
+    @FormUrlEncoded
+    @PUT("penyaluran/{id}")
+    fun ubahPPenyaluran(
+        @Header("Authorization") token : String,
+        @Path("id") id : String,
+        @Field("jenis_kebutuhan") jenis_kebutuhan : String,
+        @Field("keterangan") keterangan : String,
+        @Field("jumlah") jumlah : String,
+        @Field("status") status : String,
+        @Field("satuan") satuan : String,
+        @Field("tanggal") tanggal : String,
+        @Field("id_produk") id_produk : String,
+        @Field("penerima") penerima : String,
+    ) : Call<WrappedResponse<Penyaluran>>
+
+    @DELETE("penyaluran/{id}")
+    fun deletePenyaluran(
+        @Header("Authorization") token : String,
+        @Path("id") id : String,
     ) : Call<WrappedResponse<Penyaluran>>
 
     @GET("kebutuhan-logistik")

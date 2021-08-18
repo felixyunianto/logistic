@@ -99,7 +99,32 @@ class KelolaPenyaluranPresenter(v : PenyaluranContract.CreateOrUpdateView?) : Pe
         id_produk: String,
         penerima: String
     ) {
-        TODO("Not yet implemented")
+        val request = apiServices.ubahPPenyaluran(token, id, jenis_kebutuhan, keterangan, jumlah, status, satuan, tanggal, id_produk, penerima)
+        request.enqueue(object : Callback<WrappedResponse<Penyaluran>>{
+            override fun onResponse(
+                call: Call<WrappedResponse<Penyaluran>>,
+                response: Response<WrappedResponse<Penyaluran>>
+            ) {
+                if(response.isSuccessful){
+                    val body = response.body()
+                    if(body != null){
+                      view?.showToast(body.message)
+                      view?.success()
+                    }
+
+                    view?.hideLoading()
+                }else{
+                    val errorJson = JSONObject(response.errorBody()?.string())
+                    view?.showToast(errorJson.getString("error"))
+                }
+            }
+
+            override fun onFailure(call: Call<WrappedResponse<Penyaluran>>, t: Throwable) {
+                view?.showToast("Tidak bisa koneksi ")
+                view?.hideLoading()
+            }
+
+        })
     }
 
     override fun destroy() {

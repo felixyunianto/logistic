@@ -6,8 +6,10 @@ import com.adit.poskologistikapp.models.LogistikMasuk
 import com.adit.poskologistikapp.responses.WrappedListResponse
 import com.adit.poskologistikapp.responses.WrappedResponse
 import com.adit.poskologistikapp.utilities.APIClient
+import com.google.gson.Gson
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -108,11 +110,77 @@ class KelolaLogistikMasukActivityPresenter(v : LogistikMasukActivityContract.Cre
         status: RequestBody,
         tanggal: RequestBody,
         foto: MultipartBody.Part,
-        id_produk: RequestBody
+        id_produk: RequestBody,
+        _method: RequestBody
     ) {
-        TODO("Not yet implemented")
+        val request = apiService.editLogistikMasuk(token, id, jenis_kebutuhan, keterangan, jumlah, pengirim, satuan, status, tanggal, foto, id_produk, _method)
+        request.enqueue(object : Callback<WrappedResponse<LogistikMasuk>>{
+            override fun onResponse(
+                call: Call<WrappedResponse<LogistikMasuk>>,
+                response: Response<WrappedResponse<LogistikMasuk>>
+            ) {
+                if(response.isSuccessful){
+                    val body = response.body()
+                    if(body != null){
+                        view?.showToast(body.message)
+                        view?.success()
+                    }
+                }else{
+                    var errorJson = JSONObject(response.errorBody()?.string())
+                    view?.showToast(errorJson.getString("error"))
+
+                }
+                view?.hideLoading()
+            }
+
+            override fun onFailure(call: Call<WrappedResponse<LogistikMasuk>>, t: Throwable) {
+                view?.showToast("Tidak bisa koneksi ke server")
+                view?.hideLoading()
+            }
+
+        })
     }
 
+    override fun updateTanpaFoto(
+        token: String,
+        id: String,
+        jenis_kebutuhan: RequestBody,
+        keterangan: RequestBody,
+        jumlah: RequestBody,
+        pengirim: RequestBody,
+        satuan: RequestBody,
+        status: RequestBody,
+        tanggal: RequestBody,
+        id_produk: RequestBody,
+        _method: RequestBody
+    ) {
+        val request = apiService.editLogistikMasukTanpaFoto(token, id, jenis_kebutuhan, keterangan, jumlah, pengirim, satuan, status, tanggal, id_produk, _method)
+        request.enqueue(object : Callback<WrappedResponse<LogistikMasuk>>{
+            override fun onResponse(
+                call: Call<WrappedResponse<LogistikMasuk>>,
+                response: Response<WrappedResponse<LogistikMasuk>>
+            ) {
+                if(response.isSuccessful){
+                    val body = response.body()
+                    if(body != null){
+                        view?.showToast(body.message)
+                        view?.success()
+                    }
+                }else{
+                    var errorJson = JSONObject(response.errorBody()?.string())
+                    view?.showToast(errorJson.getString("error"))
+
+                }
+                view?.hideLoading()
+            }
+
+            override fun onFailure(call: Call<WrappedResponse<LogistikMasuk>>, t: Throwable) {
+                view?.showToast("Tidak bisa koneksi ke server")
+                view?.hideLoading()
+            }
+
+        })
+    }
 
     override fun getLogistikProduk(token: String) {
         val request = apiService.getLogistikProduk(token)

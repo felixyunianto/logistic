@@ -113,7 +113,7 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
     }
 
     private val imagePickerLauncher = registerImagePicker {
-        choosedImage = it[0]
+        choosedImage = if(it.size == 0)  null else it[0]
         showImage()
     }
 
@@ -164,6 +164,14 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
     override fun attachToSpinner(produk: List<Logistik>) {
         val spinnerProdukAdapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, produk)
         binding.spinnerProduk.adapter = spinnerProdukAdapter
+
+        if(!isNew()){
+            for(item in produk.indices){
+                if(produk[item].id == getMasuk()?.id_produk){
+                    binding.spinnerProduk.setSelection(item)
+                }
+            }
+        }
     }
 
     override fun showToast(message: String) {
@@ -256,12 +264,14 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
             }
 
             if(isNew()){
-                if(produkKonsidi == "baru"){
+                if(produkKonsidi == "baru")
+                {
                     val satuanBaru = RequestBody.create(
                         MultipartBody.FORM, binding.spinnerSatuan.selectedItem.toString()
                     )
                     presenter?.createNew(token, jenis_kebutuhan, keterangan, jumlah, pengirim, satuanBaru, status, tanggal, image!!, baru, nama_produk )
-                }else{
+                }
+                else{
                     val objectProduk = binding.spinnerProduk.selectedItem as Logistik
                     val id_produk = RequestBody.create(
                         MultipartBody.FORM, objectProduk.id
@@ -282,7 +292,15 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
                     MultipartBody.FORM, objectProduk.satuan
                 )
 
-                presenter?.update(token!!, getMasuk()?.id, jenis_kebutuhan, keterangan, jumlah, pengirim, satuan, status, tanggal, image!!, id_produk)
+                val _method = RequestBody.create(
+                    MultipartBody.FORM, "PUT"
+                )
+
+                if(choosedImage != null){
+                    presenter?.update(token!!, getMasuk()?.id, jenis_kebutuhan, keterangan, jumlah, pengirim, satuan, status, tanggal, image!!, id_produk, _method)
+                }else{
+                    presenter?.updateTanpaFoto(token!!, getMasuk()?.id, jenis_kebutuhan, keterangan, jumlah, pengirim, satuan, status, tanggal, id_produk, _method)
+                }
             }
         }
 
@@ -313,6 +331,9 @@ class KelolaLogistikMasukActivity : AppCompatActivity(), LogistikMasukActivityCo
             binding.etTanggal.setText(getMasuk()?.tanggal)
             binding.imageView.load(getMasuk()?.foto)
             produkKonsidi = "lama"
+            binding.radioLama.isChecked = true
+            binding.radioBaru.isChecked = false
+
         }
     }
 }

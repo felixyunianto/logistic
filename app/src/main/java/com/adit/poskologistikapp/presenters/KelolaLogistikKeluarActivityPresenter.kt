@@ -137,6 +137,7 @@ class KelolaLogistikKeluarActivityPresenter(v : LogistikKeluarActivityContract.C
                     val body = response.body()
                     if(body != null){
                         view?.showToast(body.message)
+                        view?.success()
                     }else{
                         view?.showToast(body?.message!!)
                     }

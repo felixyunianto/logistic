@@ -81,7 +81,7 @@ class KelolaPenyaluranActivity : AppCompatActivity(), PenyaluranContract.CreateO
     }
 
     override fun success() {
-        val intent = Intent(this@KelolaPenyaluranActivity, LogistikKeluarActivity::class.java)
+        val intent = Intent(this@KelolaPenyaluranActivity, PenyaluranActivity::class.java)
         startActivity(intent).also {
             finish()
         }
@@ -131,10 +131,12 @@ class KelolaPenyaluranActivity : AppCompatActivity(), PenyaluranContract.CreateO
     }
 
     private fun fill(){
-        binding.etKeterangan.setText(getPenyaluran()?.keterangan)
-        binding.etJumlah.setText(getPenyaluran()?.jumlah)
-        binding.etTanggal.setText(getPenyaluran()?.tanggal)
-        binding.etTerima.setText(getPenyaluran()?.penerima)
+        if(!isNew()){
+            binding.etKeterangan.setText(getPenyaluran()?.keterangan)
+            binding.etJumlah.setText(getPenyaluran()?.jumlah)
+            binding.etTanggal.setText(getPenyaluran()?.tanggal)
+            binding.etTerima.setText(getPenyaluran()?.penerima)
+        }
     }
 
     private fun doSave(){
@@ -157,6 +159,8 @@ class KelolaPenyaluranActivity : AppCompatActivity(), PenyaluranContract.CreateO
 
             if(isNew()){
                 presenter?.create(token, jenis_kebutuhan, keterangan, jumlah, status, satuan, tanggal, id_produk, penerima)
+            }else{
+                presenter?.edit(token, getPenyaluran()?.id.toString() , jenis_kebutuhan, keterangan, jumlah, status, satuan, tanggal, id_produk, penerima)
             }
         }
 

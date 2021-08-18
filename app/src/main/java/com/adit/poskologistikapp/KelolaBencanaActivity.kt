@@ -55,7 +55,7 @@ class KelolaBencanaActivity : AppCompatActivity(), BencanaActivityContract.Creat
     }
 
     private val imagePickerLauncher = registerImagePicker {
-        choosedImage = it[0]
+        choosedImage = if(it.size == 0)  null else it[0]
         showImage()
     }
 
